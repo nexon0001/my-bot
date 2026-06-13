@@ -66,7 +66,33 @@ def check_otp_live(call):
                     msg = email.message_from_bytes(response_part[1])
                     if fake_email in str(msg.get("To")).lower():
                         subject, _ = decode_header(msg["Subject"])[0]
-                        body = msg.get_payload(decode=True).decode(errors="ignore")
+                        # Yahan se replace karo
+        for m_id in mail_ids[-5:]:
+            res, msg_data = mail.fetch(m_id, "(RFC822)")
+            for response_part in msg_data:
+                if isinstance(response_part, tuple):
+                    msg = email.message_from_bytes(response_part[1])
+                    
+                    # Naya robust body extraction logic
+                    body = ""
+                    if msg.is_multipart():
+                        for part in msg.walk():
+                            if part.get_content_type() == "text/plain":
+                                payload = part.get_payload(decode=True)
+                                if payload:
+                                    body = payload.decode(errors="ignore")
+                                    break
+                    else:
+                        payload = msg.get_payload(decode=True)
+                        if payload:
+                            body = payload.decode(errors="ignore")
+                    
+                    # Ab yahan se baaki code waisa hi rahega
+                    if fake_email in str(msg.as_string()).lower():
+                        subject, _ = decode_header(msg["Subject"])[0]
+                        bot.send_message(chat_id, f"✨ **Mail Found!**\n\nSubject: {subject}\n\nContent:\n`{body[:200]}`", parse_mode="Markdown")
+                        found = True
+                        break
                         bot.send_message(chat_id, f"✨ **Mail Found!**\n\nSubject: {subject}\n\nContent:\n`{body[:200]}`", parse_mode="Markdown")
                         found = True
                         break
