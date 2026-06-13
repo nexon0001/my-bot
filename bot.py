@@ -10,8 +10,8 @@ API_TOKEN = '6889587318:AAHbmqAhDDYRIZrl-Qnm7PiIUtDHU58YhN8'
 bot = telebot.TeleBot(API_TOKEN)
 
 IMAP_SERVER = 'mail.sudipbio.pro'
-IMAP_USER = 'admin@sudipbio.pro'
-IMAP_PASS = 'Sudip1221@'  # Updated with Capital S
+IMAP_USER = 'support@sudipbio.pro'
+IMAP_PASS = '~bVbd@&7=j%3[!=G'  # Updated with Capital S
 
 MY_DOMAINS = ["sudipbio.pro"]
 
